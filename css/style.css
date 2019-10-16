@@ -1,0 +1,30 @@
+* {
+    padding:0;
+    margin:0;
+}
+
+body {
+    background-color: #719192;
+
+}
+
+.container.custom-title {
+    background-color: #5f6769;
+    color: #f9f9f9;
+    border-radius: 2%;
+}
+
+.table.custom-img img {
+    width: 20px;
+    height: 20px;
+}
+
+.custom-table-header {
+    background-color: #3c4245;
+    color:#f2f6f5;
+}
+
+.custom-table-content {
+    background-color: #f9f9f9;
+    text-align: left;
+}
