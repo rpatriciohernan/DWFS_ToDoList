@@ -7,7 +7,6 @@ var tasksList = [
 
 ////////////////////////////////////////* CONSTRUCCION DE APLICACION *////////////////////////////////////////
 
-
 // CONSTRUCCION DE LA LISTA DE TAREAS
 function construirlistaTareas(){
 
@@ -42,8 +41,9 @@ function construirlistaTareas(){
                 $("#tabla-tareas #"+task.id).append("<td>"+task.estado+"</td>");
                 // crear nuevo Td: ACCIONES
                 $("#tabla-tareas #"+task.id).append("<td class='acciones-tarea'></td>");
-                $("#tabla-tareas #"+task.id+" .acciones-tarea").append("<button type='button' class='editar-tarea btn btn-success' id='"+task.id+"'>Editar</button>");
+                $("#tabla-tareas #"+task.id+" .acciones-tarea").append("<button type='button' class='editar-tarea btn btn-primary' id='"+task.id+"'>Editar</button>");
                 $("#tabla-tareas #"+task.id+" .acciones-tarea").append("<button type='button' class='eliminar-tarea btn btn-danger' id='"+task.id+"'>Eliminar</button>");
+                $("#tabla-tareas #"+task.id+" .acciones-tarea").append("<button type='button' class='finalizar-tarea btn btn-success' id='"+task.id+"'>Finalizar</button>");
     });
 }
 
@@ -63,7 +63,11 @@ function eliminarTarea(id){
     tasksList.splice(id, 1);
     construirlistaTareas();
 }
-
+// FINALIZAR UNA TAREA
+function finalizarTarea(id){
+    tasksList[id].estado = "Terminada";
+    construirlistaTareas();
+}
 // EDITAR INFORMACION DE UNA TAREA
 function editarTarea(id, nombre, descripcion, responsable, vencimiento, estado){
     tasksList[id-1].nombre = nombre;
@@ -122,6 +126,11 @@ $(document).on("click",".acciones-tarea .editar-tarea", function(e) {
     $("#boton-actualizar-tarea").show();
     $("#boton-crear-tarea").hide();
     abrirEditorDeTarea($(e.target).attr('id')-1);
+  });
+
+// BOTON DE FINALIZAR TAREA
+$(document).on("click",".acciones-tarea .finalizar-tarea", function(e) { 
+    finalizarTarea($(e.target).attr('id')-1);
   });
 
 // BOTON DE ELIMINAR TAREA
