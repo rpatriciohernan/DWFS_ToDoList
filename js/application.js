@@ -116,6 +116,7 @@ $("#Contacto").click( function() {
 
 // BOTON DE NUEVA TAREA
 $("#Nueva-tarea").click( function() {
+    reiniciarFormularioCargaTarea();
     $("#boton-actualizar-tarea").hide();
     $("#boton-crear-tarea").show();
     $("#modal-cargar-tarea").modal('toggle');
