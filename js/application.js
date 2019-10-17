@@ -13,17 +13,38 @@ var tasksList = [
 
 // CONSTRUCCION DE LA LISTA DE TAREAS
 function construirlistaTareas(){
+
+    //remover todos los viejos elementos
+
+    $("#tabla-tareas").empty();
+
+    //cargar todos los nuevos elementos
+
     tasksList.forEach( function(task){
         //crear nuevo Table Row
+        $("#tabla-tareas").append("<tr id='"+task.id+"'>");
             // si estado = "Terminada" class='table-success'
+            if ( task.estado == "Terminada") {
+                $("#tabla-tareas #"+task.id).addClass("table-success");
+            };
             // si estado = "En Proceso" class="table-primary"
+            if ( task.estado == "En Proceso") {
+                $("#tabla-tareas #"+task.id).addClass("table-primary");
+            };
                 //crear nuevo Td: ID
+                $("#tabla-tareas #"+task.id).append("<th scope='row'>"+task.id+"</th>");
                 // crear nuevo Td: nombre
+                $("#tabla-tareas #"+task.id).append("<td>"+task.nombre+"</td>");
                 // crear nuevo Td: descripcion
+                $("#tabla-tareas #"+task.id).append("<td>"+task.descripcion+"</td>");
+                // crear nuevo Td: responsable
+                $("#tabla-tareas #"+task.id).append("<td>"+task.responsable+"</td>");
                 // crear nuevo Td: vencimiento
+                $("#tabla-tareas #"+task.id).append("<td>"+task.vencimiento+"</td>");
                 // crear nuevo Td: estado
+                $("#tabla-tareas #"+task.id).append("<td>"+task.estado+"</td>");
                 // crear nuevo Td: ACCIONES
-
+                $("#tabla-tareas #"+task.id).append("<td><img src='img/edit.png'> <img src='img/delete.png'></td>");
     });
 }
 
@@ -39,6 +60,8 @@ function agregarNuevaTarea(id, nombre, descripcion, responsable, vencimiento, es
     tasksList.push(
         new Task(id, nombre, descripcion, responsable, vencimiento, estado)
     );
+    construirlistaTareas();
+    $('#modal-cargar-tarea').trigger("reset");
 }
 
 // ELIMINAR UNA TAREA
