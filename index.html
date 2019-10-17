@@ -6,6 +6,7 @@
         <link rel="icon" href="img/pencil.png">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
         <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/font-awesome.min.css">
     </head>
     <body>
         <div class='containter-fluid'>
@@ -56,33 +57,7 @@
                                   </tr>
                                 </thead>
                                 <tbody id="tabla-tareas" class="custom-table-content"> 
-                                  <tr class='table-success'>
-                                    <th scope="row">1</th>
-                                    <td>Tarea 1</td>
-                                    <td>Una tarea de prueba</td>
-                                    <td>Javier Zolotarchuk</td>
-                                    <td>20/10/19</td>
-                                    <td>Terminada</td>
-                                    <td><img src="img/edit.png"> <img src="img/delete.png"></td>
-                                  </tr>
-                                  <tr>
-                                    <th scope="row">2</th>
-                                    <td>Tarea 2</td>
-                                    <td>Otra tarea de prueba</td>
-                                    <td>Agustin DAngelo</td>
-                                    <td>30/09/20</td>
-                                    <td>Planeada</td>
-                                    <td><img src="img/edit.png"> <img src="img/delete.png"></td>
-                                  </tr>
-                                  <tr class="table-primary">
-                                    <th scope="row">3</th>
-                                    <td>Tarea 3</td>
-                                    <td>Tercer tarea de prueba</td>
-                                    <td>Patricio Rodriguez</td>
-                                    <td>12/11/19</td>
-                                    <td>En Proceso</td>
-                                    <td><img src="img/edit.png"> <img src="img/delete.png"></td>
-                                  </tr>
+                                  
                                 </tbody>
                               </table>
                 </div>
@@ -108,7 +83,7 @@
                     </div>
             </div>
 
-            <!-- MODAL BOX NUEVA TAREA -->
+            <!-- MODAL BOX TAREA -->
             <div id="modal-cargar-tarea" class="modal" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -119,36 +94,42 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
-                                <label for="nombre-nueva-tarea">Nombre:</label>
-                                <input type="text" class="form-control" id="nombre-nueva-tarea">
-                            </div>
-                            <div class="form-group">
-                                <label for="descripcion-nueva-tarea">Descripción:</label>
-                                <textarea class="form-control" id="descripcion-nueva-tarea" rows="3"></textarea>
-                            </div>
-                            <div class="form-group">
-                                    <label for="responsable-nueva-tarea">Responsable:</label>
-                                    <input type="text" class="form-control" id="responsable-nueva-tarea">
-                            </div>
-                            <div class="form-group">
-                                    <label for="vencimiento-nueva-tarea">Vencimiento:</label>
-                                    <input type="date" class="form-control" id="vencimiento-nueva-tarea">
-                            </div>
-                            <div class="form-group">
-                                <label for="estado-nueva-tarea">Estado:</label>
-                                <select class="form-control" id="estado-nueva-tarea">
-                                    <option>Planeada</option>
-                                    <option>En Proceso</option>
-                                    <option>Terminada</option>
-                                </select>
-                            </div>
+                            <form id="formulario-cargar-tarea">
+                                <div class="form-group">
+                                    <label for="id-nueva-tarea">ID:</label>
+                                    <input type="text" class="form-control" id="id-nueva-tarea" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nombre-nueva-tarea">Nombre:</label>
+                                    <input type="text" class="form-control" id="nombre-nueva-tarea">
+                                </div>
+                                <div class="form-group">
+                                    <label for="descripcion-nueva-tarea">Descripción:</label>
+                                    <textarea class="form-control" id="descripcion-nueva-tarea" rows="3"></textarea>
+                                </div>
+                                <div class="form-group">
+                                        <label for="responsable-nueva-tarea">Responsable:</label>
+                                        <input type="text" class="form-control" id="responsable-nueva-tarea">
+                                </div>
+                                <div class="form-group">
+                                        <label for="vencimiento-nueva-tarea">Vencimiento:</label>
+                                        <input type="date" class="form-control" id="vencimiento-nueva-tarea">
+                                </div>
+                                <div class="form-group">
+                                    <label for="estado-nueva-tarea">Estado:</label>
+                                    <select class="form-control" id="estado-nueva-tarea">
+                                        <option>Planeada</option>
+                                        <option>En Proceso</option>
+                                        <option>Terminada</option>
+                                    </select>
+                                </div>
+                            </form>
                         </div>
 
 
 
                         <div id="error-carga-tarea" class="alert alert-danger alert-dismissible" role="alert">
-                                <strong>Hey Administrador!</strong> Completa todos los campos para cargar la tarea!
+                                <strong>Hey!</strong> Completa todos los campos para cargar la tarea!
                                 <button id="cerrar-error-carga-tarea" type="button" class="close" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                 </button>
@@ -158,8 +139,9 @@
 
 
                         <div class="modal-footer">
-                          <button id="boton-cargar-tarea" type="button" class="btn btn-success">Cargar Tarea</button>
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button id="boton-actualizar-tarea" type="button" class="btn btn-success">Actualizar Tarea</button>
+                            <button id="boton-crear-tarea" type="button" class="btn btn-success">Crear Tarea</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                         </div>
                       </div>
                     </div>

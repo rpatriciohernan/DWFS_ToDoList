@@ -1,11 +1,8 @@
 // LISTA DE TAREAS
 var tasksList = [
-    new Task(1, "Tarea Primera", "Una tarea agregada de prueba", "Patricio Rodriguez", "20/11/2019", "En Proceso"),
-    new Task(2, "Tarea Segunda", "Una tarea agregada de prueba", "Javier Zolotarchuk", "20/11/2019", "En Proceso"),
-    new Task(3, "Tarea Tercera", "Una tarea agregada de prueba","Agustin DAngelo",  "20/11/2019", "Planeada"),
-    new Task(4, "Tarea Cuarta", "Una tarea agregada de prueba", "Patricio Rodriguez", "20/11/2019", "Terminada"),
-    new Task(5, "Tarea Quinta", "Una tarea agregada de prueba", "Carla Varela Barreto", "20/11/2019", "Terminada"),
-    new Task(6, "Tarea Sexta", "Una tarea agregada de prueba", "Patricio Rodriguez", "20/11/2019", "En Proceso")
+    new Task(1, "Tarea Primera", "Una tarea agregada de prueba", "Patricio Rodriguez", "2019-10-11", "En Proceso"),
+    new Task(2, "Tarea Segunda", "Una tarea agregada de prueba", "Javier Zolotarchuk", "2019-10-11", "Planeada"),
+    new Task(3, "Tarea Tercera", "Una tarea agregada de prueba","Agustin DAngelo",  "2019-10-11", "Terminada"),
 ];
 
 ////////////////////////////////////////* CONSTRUCCION DE APLICACION *////////////////////////////////////////
@@ -44,13 +41,10 @@ function construirlistaTareas(){
                 // crear nuevo Td: estado
                 $("#tabla-tareas #"+task.id).append("<td>"+task.estado+"</td>");
                 // crear nuevo Td: ACCIONES
-                $("#tabla-tareas #"+task.id).append("<td><img src='img/edit.png'> <img src='img/delete.png'></td>");
+                $("#tabla-tareas #"+task.id).append("<td class='acciones-tarea'></td>");
+                $("#tabla-tareas #"+task.id+" .acciones-tarea").append("<button type='button' class='editar-tarea btn btn-success' id='"+task.id+"'>Editar</button>");
+                $("#tabla-tareas #"+task.id+" .acciones-tarea").append("<button type='button' class='eliminar-tarea btn btn-danger' id='"+task.id+"'>Eliminar</button>");
     });
-}
-
-// CONSTRUCCION DE ACCIONES PARA CADA TAREA
-function construirAcciones(){
-
 }
 
 ////////////////////////////////////////* GESTION DE TAREAS *////////////////////////////////////////
@@ -61,12 +55,13 @@ function agregarNuevaTarea(id, nombre, descripcion, responsable, vencimiento, es
         new Task(id, nombre, descripcion, responsable, vencimiento, estado)
     );
     construirlistaTareas();
-    $('#modal-cargar-tarea').trigger("reset");
+    reiniciarFormularioCargaTarea();
 }
 
 // ELIMINAR UNA TAREA
 function eliminarTarea(id){
-    tasksList.splice(id-1, 1);
+    tasksList.splice(id, 1);
+    construirlistaTareas();
 }
 
 // EDITAR INFORMACION DE UNA TAREA
@@ -76,8 +71,33 @@ function editarTarea(id, nombre, descripcion, responsable, vencimiento, estado){
     tasksList[id-1].responsable = responsable;
     tasksList[id-1].vencimiento = vencimiento;
     tasksList[id-1].estado = estado;
+    construirlistaTareas();
+    reiniciarFormularioCargaTarea();
 }
 
+// REINICIAR FORMULARIO DE CARGA DE TAREA
+function reiniciarFormularioCargaTarea(){
+    $("#id-nueva-tarea").val('');
+    $("#nombre-nueva-tarea").val('');
+    $("#descripcion-nueva-tarea").val('');
+    $("#responsable-nueva-tarea").val('');
+    $("#vencimiento-nueva-tarea").val('');
+    $("#estado-nueva-tarea").val('');
+}
+
+// ABRIR EDITOR DE TAREA
+function abrirEditorDeTarea(id){
+    //Cargo campos del formulario con los datos de la tarea a abrir
+    $("#id-nueva-tarea").val(tasksList[id].id);
+    $("#nombre-nueva-tarea").val(tasksList[id].nombre);
+    $("#descripcion-nueva-tarea").val(tasksList[id].descripcion);
+    $("#responsable-nueva-tarea").val(tasksList[id].responsable);
+    $("#vencimiento-nueva-tarea").val(tasksList[id].vencimiento);
+    $("#estado-nueva-tarea").val(tasksList[id].estado);
+
+    //abro el formulario
+    $("#modal-cargar-tarea").modal('toggle');
+}
 ////////////////////////////////////////* COMPORTAMIENTO DE VENTANA PRINCIPAL *////////////////////////////////////////
 
 // BOTON DE AYUDA
@@ -92,13 +112,27 @@ $("#Contacto").click( function() {
 
 // BOTON DE NUEVA TAREA
 $("#Nueva-tarea").click( function() {
+    $("#boton-actualizar-tarea").hide();
+    $("#boton-crear-tarea").show();
     $("#modal-cargar-tarea").modal('toggle');
 })
 
+// BOTON DE ACTUALIZAR TAREA
+$(document).on("click",".acciones-tarea .editar-tarea", function(e) { 
+    $("#boton-actualizar-tarea").show();
+    $("#boton-crear-tarea").hide();
+    abrirEditorDeTarea($(e.target).attr('id')-1);
+  });
+
+// BOTON DE ELIMINAR TAREA
+$(document).on("click",".acciones-tarea .eliminar-tarea", function(e) { 
+    eliminarTarea($(e.target).attr('id')-1);
+  });
+
 ////////////////////////////////////////* COMPORTAMIENTO DE MODALES *////////////////////////////////////////
 
-// BOTON CARGAR TAREA
-$("#boton-cargar-tarea").click( function(){
+// BOTON CREAR TAREA
+$("#boton-crear-tarea").click( function(){
     if( 
         $("#nombre-nueva-tarea").val() == "" ||
         $("#descripcion-nueva-tarea").val() == "" ||
@@ -120,6 +154,28 @@ $("#boton-cargar-tarea").click( function(){
         };
 })
 
+// BOTON ACTUALIZAR TAREA
+$("#boton-actualizar-tarea").click( function(){
+    if( 
+        $("#nombre-nueva-tarea").val() == "" ||
+        $("#descripcion-nueva-tarea").val() == "" ||
+        $("#responsable-nueva-tarea").val() == "" ||
+        $("#vencimiento-nueva-tarea").val() == ""  ||
+        $("#estado-nueva-tarea").val() == "") 
+        {
+        $("#error-carga-tarea").show();
+    }else{
+        editarTarea($("#id-nueva-tarea").val(), 
+                $("#nombre-nueva-tarea").val(), 
+                $("#descripcion-nueva-tarea").val(),
+                $("#responsable-nueva-tarea").val(),
+                $("#vencimiento-nueva-tarea").val(),
+                $("#estado-nueva-tarea").val()
+                );
+        $("#modal-cargar-tarea").modal('hide');
+        $("#toast-nueva-tarea").toast('show');
+        };
+})
 
 // BOTON CERRAR ALERTA CARGA TAREA
 $("#cerrar-error-carga-tarea").click( function() {

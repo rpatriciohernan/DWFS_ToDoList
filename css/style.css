@@ -28,8 +28,6 @@ body {
     display:none;
 }
 
-#toast-container {
-    display:flex;
-    align-items: flex-end;
-    justify-content: flex-end;
+td {
+    vertical-align: middle;
 }
